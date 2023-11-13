@@ -20,6 +20,7 @@ A web page representing a simple decentralized application (DApp) that interacts
    - `getATMContract`: Creates an instance of the smart contract using ethers.js.
    - `getBalance`: Retrieves the user's balance from the smart contract.
    - `deposit` and `withdraw`: Interact with the smart contract to deposit and withdraw funds.
+   - `depositHistory` and `withdrawHistory`: Interact with the smart contract to give deposit and withdraw history.
    - `initUser`: Renders different UI elements based on the user's MetaMask status, account connection, and balance.
 
 5. **Lifecycle and Rendering:**
