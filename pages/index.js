@@ -7,6 +7,8 @@ export default function HomePage() {
   const [account, setAccount] = useState(undefined);
   const [atm, setATM] = useState(undefined);
   const [balance, setBalance] = useState(undefined);
+  const [depositionHistory, setDepositionHistory] = useState(undefined);
+  const [withdrawalHistory, setWithdrawalHistory] = useState(undefined);
   const [depositSuccess, setDepositSuccess] = useState(false);
   const [withdrawSuccess, setWithdrawSuccess] = useState(false);
 
@@ -63,6 +65,29 @@ export default function HomePage() {
   const getBalance = async () => {
     if (atm) {
       setBalance((await atm.getBalance()).toNumber());
+    }
+  };
+
+  const depositHistory = async () => {
+    if (atm) {
+      try {
+        const totalDeposit = await atm.depositHistory();
+        setDepositionHistory(totalDeposit);
+        console.log("Total Deposit:", totalDeposit);
+      } catch (error) {
+        console.error("Error getting total deposit amount: ", error.message);
+      }
+    }
+  };
+  const withdrawHistory = async () => {
+    if (atm) {
+      try {
+        const totalWithdraw = await atm.withdrawHistory();
+        setWithdrawalHistory(totalWithdraw);
+        console.log("Total Withdraw:", totalWithdraw);
+      } catch (error) {
+        console.error("Error getting total withdraw amount: ", error.message);
+      }
     }
   };
 
@@ -126,6 +151,7 @@ export default function HomePage() {
       <div className="user-container">
         <p>Your Account: {account}</p>
         <p>Your Balance: {balance}</p>
+
         <div className="buttons-container">
           <button onClick={deposit} className="action-button">
             Deposit 1 ETH
@@ -133,6 +159,20 @@ export default function HomePage() {
           <button onClick={withdraw} className="action-button">
             Withdraw 1 ETH
           </button>
+          <p>
+            Total Deposited Amount:{" "}
+            {depositionHistory === undefined
+              ? ""
+              : depositionHistory.toNumber()}{" "}
+          </p>
+          <button onClick={depositHistory}>Deposit History</button>
+          <p>
+            Total Withdrawn Amount:{" "}
+            {withdrawalHistory === undefined
+              ? ""
+              : withdrawalHistory.toNumber()}{" "}
+          </p>
+          <button onClick={withdrawHistory}>Withdraw History</button>
         </div>
       </div>
     );
