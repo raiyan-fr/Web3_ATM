@@ -6,6 +6,8 @@ pragma solidity ^0.8.9;
 contract Assessment {
     address payable public owner;
     uint256 public balance;
+    uint256 public TotalDeposit;
+    uint256 public TotalWithdraw;
 
     event Deposit(uint256 amount);
     event Withdraw(uint256 amount);
@@ -15,10 +17,18 @@ contract Assessment {
         balance = initBalance;
     }
 
-    function getBalance() public view returns(uint256){
+    function getBalance() public view returns (uint256) {
         return balance;
     }
- 
+
+    function depositHistory() public view returns (uint256) {
+        return TotalDeposit;
+    }
+
+    function withdrawHistory() public view returns (uint256) {
+        return TotalWithdraw;
+    }
+
     function deposit(uint256 _amount) public payable {
         uint _previousBalance = balance;
 
@@ -28,6 +38,7 @@ contract Assessment {
         // perform transaction
         balance += _amount;
 
+        TotalDeposit += _amount;
         // assert transaction completed successfully
         assert(balance == _previousBalance + _amount);
 
@@ -51,6 +62,7 @@ contract Assessment {
         // withdraw the given amount
         balance -= _withdrawAmount;
 
+        TotalWithdraw += _withdrawAmount;
         // assert the balance is correct
         assert(balance == (_previousBalance - _withdrawAmount));
 
