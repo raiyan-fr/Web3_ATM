@@ -136,9 +136,6 @@ export default function HomePage() {
       return (
         <div className="init-container">
           <button onClick={connectAccount}>Connect Metamask</button>
-          <p className="popup-comment">
-            Connect your Metamask wallet to proceed.
-          </p>
         </div>
       );
     }
@@ -165,14 +162,18 @@ export default function HomePage() {
               ? ""
               : depositionHistory.toNumber()}{" "}
           </p>
-          <button onClick={depositHistory}>Deposit History</button>
+          <button onClick={depositHistory} className="history-button">
+            Deposit History
+          </button>
           <p>
             Total Withdrawn Amount:{" "}
             {withdrawalHistory === undefined
               ? ""
               : withdrawalHistory.toNumber()}{" "}
           </p>
-          <button onClick={withdrawHistory}>Withdraw History</button>
+          <button onClick={withdrawHistory} className="history-button">
+            Withdraw History
+          </button>
         </div>
       </div>
     );
@@ -182,146 +183,289 @@ export default function HomePage() {
     getWallet();
   }, []);
 
+  useEffect(() => {
+    if (depositSuccess || withdrawSuccess) {
+      const timer = setTimeout(() => {
+        setDepositSuccess(false);
+        setWithdrawSuccess(false);
+      }, 2000); // 2000ms = 2 seconds
+
+      return () => clearTimeout(timer); // Clean up the timer
+    }
+  }, [depositSuccess, withdrawSuccess]);
+
   return (
     <main className="container">
       <header>
-        <h1>Welcome to the Raiyan's ATM!</h1>
+        <h1>🌟 Raiyan's Next-Gen ATM Interface</h1>
       </header>
       <div className="content">
         {initUser()}
         <div className="animation-container">
           <p className="animated-text">
-            Hello Everyone! Welcome to my ATM Model
+            🚀 Experience Seamless Blockchain Transactions
           </p>
         </div>
       </div>
       <div className="popup-comments">
         {depositSuccess && (
-          <p className="popup-comment success">Deposit successful!</p>
+          <p className="popup-comment success">✅ Deposit Successful!</p>
         )}
         {withdrawSuccess && (
-          <p className="popup-comment success">Withdrawal successful!</p>
+          <p className="popup-comment success">✅ Withdrawal Completed!</p>
         )}
       </div>
-      <style jsx>
-        {`
-          /* General styling */
-          body {
-            font-family: "Arial", sans-serif;
-            margin: 0;
-            padding: 0;
-          }
+      <style jsx global>{`
+        @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap");
+      `}</style>
+      <style jsx global>{`
+        .container {
+          min-height: 100vh;
+          padding: 2rem;
+          background: linear-gradient(45deg, #0f0c29, #302b63, #24243e);
+          font-family: "Inter", sans-serif;
+          position: relative;
+          overflow: hidden;
+        }
 
-          /* Container styling */
-          .container {
-            text-align: center;
-            padding: 20px;
-            background: linear-gradient(to right, #e67e22, #333);
-          }
+        .container::before {
+          content: "";
+          position: absolute;
+          top: -50%;
+          left: -50%;
+          width: 200%;
+          height: 200%;
+          background: linear-gradient(
+            45deg,
+            transparent,
+            rgba(255, 255, 255, 0.1),
+            transparent
+          );
+          animation: gradientAnim 15s infinite linear;
+        }
 
-          /* Header styling */
-          header {
-            background-color: #e67e22;
-            padding: 20px;
-            color: black;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        @keyframes gradientAnim {
+          0% {
+            transform: rotate(0deg);
           }
+          100% {
+            transform: rotate(360deg);
+          }
+        }
 
-          /* Content styling */
-          .content {
-            border: 1px solid #333;
-            padding: 20px;
-            border-radius: 10px;
-            background-color: #333;
-            color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-          }
+        header {
+          background: rgba(255, 255, 255, 0.1);
+          backdrop-filter: blur(10px);
+          padding: 2rem;
+          border-radius: 20px;
+          margin-bottom: 2rem;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
 
-          /* Initialization container styling */
-          .init-container {
-            margin-top: 20px;
-            text-align: center;
-          }
+        header h1 {
+          margin: 0;
+          color: #fff;
+          font-weight: 700;
+          letter-spacing: -0.5px;
+          font-size: 2.2rem;
+        }
 
-          /* User container styling */
-          .user-container {
-            margin-top: 20px;
-          }
+        .content {
+          background: rgba(255, 255, 255, 0.05);
+          backdrop-filter: blur(12px);
+          border-radius: 20px;
+          padding: 2rem;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          position: relative;
+        }
 
-          /* Buttons container styling */
-          .buttons-container {
-            display: flex;
-            justify-content: center;
-            margin-top: 15px;
-          }
+        .init-container {
+          text-align: center;
+          padding: 2rem;
+        }
 
-          /* Action button styling */
-          .action-button {
-            background-color: #f39c12;
-            padding: 15px 30px;
-            margin: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            color: white;
-            box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-            transition: background-color 0.3s ease, transform 0.2s ease;
-          }
+        .init-container button {
+          background: linear-gradient(45deg, #6366f1, #8b5cf6);
+          border: none;
+          padding: 1rem 2rem;
+          border-radius: 12px;
+          color: white;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
 
-          .action-button:hover {
-            background-color: #d35400;
-            transform: scale(1.05);
-          }
+        .init-container button:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
 
-          /* Animation container styling */
-          .animation-container {
-            margin-top: 20px;
-            margin-bottom: 20px;
-            overflow: hidden;
-          }
+        .user-container {
+          color: #fff;
+        }
 
-          /* Animated text styling */
-          .animated-text {
-            color: #f39c12;
-            font-size: 24px;
-            font-weight: bold;
-            animation: moveText 5s infinite;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-          }
+        .user-container p {
+          font-size: 1.1rem;
+          margin: 1rem 0;
+          background: rgba(255, 255, 255, 0.05);
+          padding: 1rem;
+          border-radius: 12px;
+          font-family: monospace;
+        }
 
-          @keyframes moveText {
-            0% {
-              transform: translateX(50%);
-            }
-            10% {
-              transform: translateX(-10%);
-            }
-          }
+        .buttons-container {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 1rem;
+          margin: 2rem 0;
+        }
 
-          /* Popup comments container styling */
-          .popup-comments {
-            text-align: center;
-          }
+        .action-button {
+          background: linear-gradient(45deg, #10b981, #059669);
+          border: none;
+          padding: 1.2rem;
+          border-radius: 12px;
+          color: white;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.5rem;
+        }
 
-          /* Popup comment styling */
-          .popup-comment {
-            background-color: #e74c3c;
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            margin-top: 10px;
-            font-size: 16px;
-            display: inline-block;
-          }
+        .buttons-container .action-button:last-child {
+          background: linear-gradient(45deg, #ef4444, #dc2626) !important;
+          position: relative;
+        }
 
-          /* Success popup comment styling */
-          .popup-comment.success {
-            background-color: #2ecc71;
+        .action-button:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .buttons-container button:not(.action-button) {
+          background: none;
+          border: 2px solid rgba(255, 255, 255, 0.1);
+          color: #fff;
+          padding: 0.8rem 1.5rem;
+          border-radius: 8px;
+          transition: all 0.3s ease;
+        }
+
+        .buttons-container button:not(.action-button):hover {
+          background: rgba(255, 255, 255, 0.05);
+        }
+
+        .history-button {
+          background: linear-gradient(45deg, #7c3aed, #6d28d9); !important;
+          border: 2px solid rgba(255, 255, 255, 0.15) !important;
+          color: white !important;
+          padding: 0.8rem 1.5rem;
+          border-radius: 10px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          backdrop-filter: blur(5px);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.5rem;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .history-button:hover {
+          background: linear-gradient(45deg, #6d28d9, #7c3aed); !important;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
+        }
+
+        .history-button::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 255, 255, 0.1),
+            transparent
+          );
+          transition: 0.5s;
+        }
+
+        .history-button:hover::before {
+          left: 100%;
+        }
+
+        .animated-text {
+          color: rgba(255, 255, 255, 0.8);
+          font-size: 1.2rem;
+          text-align: center;
+          animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+          0%,
+          100% {
+            transform: translateY(0);
           }
-        `}
-      </style>
+          50% {
+            transform: translateY(-5px);
+          }
+        }
+
+        .popup-comment {
+          position: fixed;
+          bottom: 2rem;
+          left: 50%;
+          transform: translateX(-50%);
+          padding: 1rem 2rem;
+          border-radius: 8px;
+          font-weight: 500;
+          backdrop-filter: blur(10px);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+          animation: fadeInOut 2s ease-in-out forwards;
+          opacity: 0;
+        }
+
+        @keyframes fadeInOut {
+          0% {
+            opacity: 0;
+            transform: translateX(-50%) translateY(20px);
+          }
+          20% {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+          }
+          80% {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+          }
+          100% {
+            opacity: 0;
+            transform: translateX(-50%) translateY(-20px);
+          }
+        }
+
+        .popup-comment.success {
+          background: rgba(16, 185, 129, 0.2);
+          color: #10b981;
+        }
+
+        .init-container .popup-comment {
+          color: rgba(255, 255, 255, 0.8);
+          margin-top: 1rem;
+          font-size: 0.9rem;
+        }
+      `}</style>
     </main>
   );
 }
