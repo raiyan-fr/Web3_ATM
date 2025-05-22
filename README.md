@@ -1,6 +1,9 @@
 ## Web3_ATM
 A web page representing a simple decentralized application (DApp) that interacts with an Ethereum smart contract.
 
+![image](https://github.com/user-attachments/assets/0fd5ad4f-f2ee-454e-af57-f17624dbd99a)
+
+
 # Main Components
 
 1. **Import Statements:**
